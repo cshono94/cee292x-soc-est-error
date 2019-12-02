@@ -45,6 +45,8 @@ All is needed to run a simulation in BDS is a cylcer profile (.prg file) and a b
     - From 85% SOC pulse discharge down to 15% SOC 
     - From 15% SOC pulse charge up to 50% SOC 
   - Sequentially run all of the above charge cycles in one simulation 
+
+### Predict on New Model 
 - After results for fitting cycle are obtained: 
   - Fit a single charge and discharge efficiency for the entire charge cycle 
   - Fit piecewise efficiency mapped to SOC, current, and Temp(C) 
@@ -53,3 +55,9 @@ All is needed to run a simulation in BDS is a cylcer profile (.prg file) and a b
   - Q(t+1) = Q(t) + eff x (C + error) 
   - Q(t+1) = Q(t) + eff(Q, C, T) x (C + error) 
 - Predict SOC using fitted models on a test cycle (regulation signal, etc...) 
+- Outputs X, Y, Y_hat, Resid for each sample 
+
+### Evaluate Errors on Prediction 
+- Plot the distribution of residuals 
+- Plot residual vs. time 
+- Boxplot Residual vs. time 
