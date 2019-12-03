@@ -34,6 +34,10 @@ filename = "../bds-out/pulse_100pct_pulse_100pct____0_NiMH_36s6p.out"
 data_start_line = 65
 q_nom = 12.5
 
+filename = "../bds-out/norm_30sd40cap_2_norm_30sd40cap_2____0_NiMH_36s6p.out"
+data_start_line = 65
+q_nom = 12.5
+
 #----------------------------------------------------------
 # Generate output filenames
 
