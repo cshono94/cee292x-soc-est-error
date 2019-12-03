@@ -26,11 +26,11 @@ filename = "../bds-out/pulse_10pct_pulse_10pct____0_NiMH_36s6p.out"
 data_start_line = 65
 q_nom = 12.5 # Ah
 
-#filename = "../bds-out/pulse_50pct_pulse_50pct____0_NiMH_36s6p.out"
+filename = "../bds-out/pulse_50pct_pulse_50pct____0_NiMH_36s6p.out"
 data_start_line = 65
 q_nom = 12.5
 
-#filename = "../bds-out/pulse_100pct_pulse_100pct____0_NiMH_36s6p.out"
+filename = "../bds-out/pulse_100pct_pulse_100pct____0_NiMH_36s6p.out"
 data_start_line = 65
 q_nom = 12.5
 
@@ -98,7 +98,7 @@ def read_nimh_output(filepath):
 
     headers_subset = [
         "Step", "Test(min)", "Amps", "Mode", "CumCapacity(Ah)", "CumEnergy(Wh)",
-        "Q"
+        "Q", "T(C)" 
     ]
 
     output_data = pd.read_csv(filepath, sep='\t', header=None, skiprows=data_start_line-1)
