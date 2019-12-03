@@ -2,20 +2,21 @@
 # Import Libraries
 
 import pandas as pd
+import os 
 
 # ------------------------------------------------------------------------------
 # Define Filepaths
 
-file_in = "../cycles-raw/pulse_10pct.csv"
-file_out = "../cycles-prg/pulse_10pct.prg"
+dir_in = "../cycles-raw/" 
+dir_out = "../cycles-prg/" 
 
-file_in = "../cycles-raw/norm_30sd40cap.csv" 
-file_out = "../cycles-prg/norm_30sd40cap.prg" 
+file_in = "norm_30sd40cap_2.csv"
+file_out = file_in.replace(".csv", ".prg") 
 
 # ------------------------------------------------------------------------------
 # Read in raw cycle
 
-df = pd.read_csv(file_in)
+df = pd.read_csv(os.path.join(dir_in, file_in)) 
 n_steps = df.shape[0]
 
 # ------------------------------------------------------------------------------
@@ -85,6 +86,6 @@ OVEN CONVECTION MODE	=	0
 Filter	=\t
 InitTemp	=	25"""
 
-df.to_csv(file_out, sep="\t", header=False, index=False)
-line_prepender(file_out, header_str)
-line_appender(file_out, footer_str)
+df.to_csv(os.path.join(dir_out, os.path.join(dir_out, file_out)), sep="\t", header=False, index=False)
+line_prepender(os.path.join(dir_out, file_out), header_str)
+line_appender(os.path.join(dir_out, file_out), footer_str)
