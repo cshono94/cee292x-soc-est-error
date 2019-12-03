@@ -7,7 +7,8 @@ Starting with a CSV file input, generate a .prg output file that can run in BDS.
 have the following formating: 
 - 2 columns in the following order: "Test(s)", "Current(A)" 
   - Test(s) is the number of seconds since the start of cycle 
-  - Current(A) is the average current over from the current Test(s) until the next timestep 
+  - Current(A) is the average current over from the current Test(s) until the next timestep. 
+    - Positive (charge), Negative (discharge) 
 
 Output .prg will have the following fields: 
 - step type, control type, control value, end type, end value, limit type, limit value, report volts, report time, temperature(C)
