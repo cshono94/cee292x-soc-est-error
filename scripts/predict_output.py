@@ -16,6 +16,7 @@ from sklearn import linear_model
 # Define User Inputs 
 
 filename_output_data = "../results-pickles/pulse_50pct_pulse_50pct____0_NiMH_36s6p_output_data.P" 
+filename_output_data = "../results-pickles/norm_30sd40cap_2_norm_30sd40cap_2____0_NiMH_36s6p_output_data.P"
 
 
 #----------------------------------------------------------
@@ -37,26 +38,20 @@ dchg_data = fit_data[fit_data.Amps < 0]
 #----------------------------------------------------------
 # Fit Efficiency as Linear Model of SOC, and Charge Rate 
 
-X = chg_data[["Q"]]#, "Amps"]] 
-y = chg_data["soc_eff"] 
+X = dchg_data[["Q", "Amps"]] 
+y = dchg_data["soc_eff"] 
 
-#lm = linear_model.LinearRegression()
-#model = lm.fit(X,y)
+lm = linear_model.LinearRegression()
+model = lm.fit(X,y)
 
-from statsmodels.api import OLS
-m = OLS(y,X).fit() 
-
+y_preds = model.predict(X)
+y_resid = y_preds - y  
 
 import matplotlib.pyplot as plt 
-plt.hist(m.resid) 
-print(m.summary())
 
-plt.scatter(X, y)
-
+#plt.plot(y, y_preds) 
+plt.hist(y_resid)
 
 
-
-
-
-
-
+model.coef_
+model.intercept_

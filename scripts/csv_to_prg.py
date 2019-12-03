@@ -11,6 +11,7 @@ dir_in = "../cycles-raw/"
 dir_out = "../cycles-prg/" 
 
 file_in = "norm_30sd40cap_2.csv"
+file_in = "pulse_merged.csv" 
 file_out = file_in.replace(".csv", ".prg") 
 
 # ------------------------------------------------------------------------------
