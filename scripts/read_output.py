@@ -26,18 +26,23 @@ filename = "../bds-out/pulse_10pct_pulse_10pct____0_NiMH_36s6p.out"
 data_start_line = 65
 q_nom = 12.5 # Ah
 
-filename = "../bds-out/pulse_50pct_pulse_50pct____0_NiMH_36s6p.out"
+#filename = "../bds-out/pulse_50pct_pulse_50pct____0_NiMH_36s6p.out"
 data_start_line = 65
 q_nom = 12.5
 
-filename = "../bds-out/pulse_100pct_pulse_100pct____0_NiMH_36s6p.out"
+#filename = "../bds-out/pulse_100pct_pulse_100pct____0_NiMH_36s6p.out"
 data_start_line = 65
 q_nom = 12.5
-file_out = "../results-plots/" + filename.split("/")[-1].split(".out")[0] + "_plot.html"
-filename_soc = "../results-plots/" + filename.split("/")[-1].split(".out")[0] + "_SOCplot.html"
 
 #----------------------------------------------------------
-filepath= filename
+# Generate output filenames
+
+filename_str = filename.split("/")[-1].split(".out")[0]
+filename_plot = "../results-plots/" + filename_str + "_plot.html"
+filename_socplot = "../results-plots/" + filename_str + "_SOCplot.html"
+filename_pickle = "../results-pickles/" + filename_str + "_output_data.P"
+
+#----------------------------------------------------------
 # Define Read Functions
 
 def add_sign_to_current(row):
@@ -125,57 +130,66 @@ def replace_eff_outliers(eff):
     else:
         return eff
 
+def plot_traces(output_data):
+
+    trace_ah_in = go.Scatter(
+        x = output_data["Test(min)"],
+        y = output_data["step_ah_in"],
+        name = "Charge Cycle (Ah)",
+        opacity = 0.66,
+    )
+
+    trace_ah_soc = go.Scatter(
+        x = output_data["Test(min)"],
+        y = output_data["step_ah_soc"],
+        name = "delta_SOC (Ah)",
+        opacity = 0.66
+    )
+
+    trace_ah_eff = go.Scatter(
+        x = output_data["Test(min)"],
+        y = output_data["soc_eff"],
+        name = "Ah Efficiency",
+        opacity = 0.66,
+        yaxis = "y2"
+    )
+
+    layout = go.Layout(
+        xaxis = dict(title = "Test (min)"),
+        yaxis = dict(title="Delta Capacity (Ah)"),
+        yaxis2 = dict(
+            title = "Step Efficiency",
+            overlaying = "y",
+            side = "right"
+        )
+    )
+
+    fig = go.Figure(data=[trace_ah_in, trace_ah_soc, trace_ah_eff], layout=layout)
+    pyo.plot(fig, auto_open=False, filename=filename_plot)
+
+    trace_soc = go.Scatter(
+        x = output_data["Test(min)"],
+        y = output_data["test_ah_soc"]/q_nom*100,
+        name = "SOC (%)"
+    )
+
+    layout = go.Layout(
+        xaxis = dict(title = "Test (min)"),
+        yaxis = dict(title = "SOC (%)"),
+    )
+
+    fig_soc = go.Figure(data=[trace_soc], layout=layout)
+    pyo.plot(fig_soc, auto_open=False, filename=filename_socplot)
+
 #----------------------------------------------------------
 
 # Main
 
+# Read output and calculate efficiencies
 output_data = read_nimh_output(filename)
 
-trace_ah_in = go.Scatter(
-    x = output_data["Test(min)"],
-    y = output_data["step_ah_in"],
-    name = "Charge Cycle (Ah)",
-    opacity = 0.66,
-)
+# Plot Results
+plot_traces(output_data)
 
-trace_ah_soc = go.Scatter(
-    x = output_data["Test(min)"],
-    y = output_data["step_ah_soc"],
-    name = "delta_SOC (Ah)",
-    opacity = 0.66
-)
-
-trace_ah_eff = go.Scatter(
-    x = output_data["Test(min)"],
-    y = output_data["soc_eff"],
-    name = "Ah Efficiency",
-    opacity = 0.66,
-    yaxis = "y2"
-)
-
-layout = go.Layout(
-    xaxis = dict(title = "Test (min)"),
-    yaxis = dict(title="Delta Capacity (Ah)"),
-    yaxis2 = dict(
-        title = "Step Efficiency",
-        overlaying = "y",
-        side = "right"
-    )
-)
-
-fig = go.Figure(data=[trace_ah_in, trace_ah_soc, trace_ah_eff], layout=layout)
-pyo.plot(fig, auto_open=False, filename=file_out)
-
-trace_soc = go.Scatter(
-    x = output_data["Test(min)"],
-    y = output_data["test_ah_soc"]/q_nom*100,
-    name = "SOC (%)"
-)
-
-layout = go.Layout(
-    xaxis = dict(title = "Test (min)"),
-    yaxis = dict(title = "SOC (%)"),
-)
-
-fig_soc = go.Figure(data=[trace_soc], layout=layout)
-pyo.plot(fig_soc, auto_open=False, filename=filename_soc)
+# Export output_data to pickle
+output_data.to_pickle(filename_pickle)
