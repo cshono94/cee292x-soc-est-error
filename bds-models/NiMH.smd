@@ -1,0 +1,18 @@
+BDS_EquivCircuit_MODEL
+NiMH
+m_dAhNominal	=	12.5	!		!	m_dAhNominal
+m_dCD	=	43.6681	!		!	m_dCD
+m_dDeltaS	=	22	!		!	m_dDeltaS
+m_dEas	=	56445.8	!		!	m_dEas
+m_dEo	=	1.375	!		!	m_dEo
+m_dEpsilon	=	1	!		!	m_dEpsilon
+m_dEtaICharge	=	0.99	!		!	m_dEtaICharge
+m_dEtaIDischarge	=	1	!		!	m_dEtaIDischarge
+m_dInitQ	=	50	!		!	m_dInitQ
+m_dKo	=	1.0683e+007	!		!	m_dKo
+m_dRS	=	0.001	!		!	m_dRS
+m_dRct	=	0.625683	!		!	m_dRct
+m_dTref	=	308.15	!		!	m_dTref
+m_dVhMax	=	0.05	!		!	m_dVhMax
+m_nCellsInParallel	=	80	!	
+m_nCellsInSeries	=	36	!	
