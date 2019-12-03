@@ -46,6 +46,7 @@ All is needed to run a simulation in BDS is a cylcer profile (.prg file) and a b
     - From 85% SOC pulse discharge down to 15% SOC 
     - From 15% SOC pulse charge up to 50% SOC 
   - Sequentially run all of the above charge cycles in one simulation 
+  - Fit on a random signal, like random noise 
 
 ### Predict on training and test data 
 - After results for fitting cycle are obtained: 
