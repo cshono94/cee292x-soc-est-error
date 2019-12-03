@@ -6,8 +6,8 @@ import pandas as pd
 # ------------------------------------------------------------------------------
 # Define Filepaths
 
-file_in = "../cycles-raw/pulse_50pct.csv"
-file_out = "../cycles-prg/pulse_50pct.prg"
+file_in = "../cycles-raw/pulse_10pct.csv"
+file_out = "../cycles-prg/pulse_10pct.prg"
 
 # ------------------------------------------------------------------------------
 # Read in raw cycle
