@@ -17,7 +17,7 @@ from sklearn import linear_model
 
 filename_output_data = "../results-pickles/pulse_50pct_pulse_50pct____0_NiMH_36s6p_output_data.P" 
 filename_output_data = "../results-pickles/norm_30sd40cap_2_norm_30sd40cap_2____0_NiMH_36s6p_output_data.P"
-
+filename_output_data = "../results-pickles/pulse_merged_pulse_merged____0_NiMH_36s6p_output_data.P"
 
 #----------------------------------------------------------
 # Import Data 
@@ -32,7 +32,6 @@ fit_data = output_data[["Q", "Amps", "soc_eff"]].dropna()
 
 chg_data = fit_data[fit_data.Amps > 0] 
 dchg_data = fit_data[fit_data.Amps < 0] 
-
 
 
 #----------------------------------------------------------
