@@ -62,5 +62,5 @@ Disabled
 0
 HTC	=	         100
 OVEN CONVECTION MODE	=	0
-Filter	=    
+Filter	=	
 InitTemp	=	25

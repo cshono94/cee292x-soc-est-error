@@ -79,7 +79,7 @@ Disabled
 0
 HTC	=	         100
 OVEN CONVECTION MODE	=	0
-Filter	=    
+Filter	=\t
 InitTemp	=	25"""
 
 df.to_csv(file_out, sep="\t", header=False, index=False)
