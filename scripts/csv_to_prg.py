@@ -6,14 +6,14 @@ import pandas as pd
 # ------------------------------------------------------------------------------
 # Define Filepaths
 
-file_in = "../cycles-raw/pulse_100pct.csv"
-file_out = "../cycles-prg/pulse_100pct.prg"
+file_in = "../cycles-raw/pulse_50pct.csv"
+file_out = "../cycles-prg/pulse_50pct.prg"
 
 # ------------------------------------------------------------------------------
 # Read in raw cycle
 
 df = pd.read_csv(file_in)
-df.shape
+n_steps = df.shape[0]
 
 # ------------------------------------------------------------------------------
 # Add prg variables
@@ -30,14 +30,14 @@ def get_control_type(c):
     if c != 0:
         return "1"
     else:
-        return ""
+        return "0"
 
 def get_control_value(c):
     return str(abs(c))
 
 df["step_type"] = df["Current(A)"].apply(get_step_type)
 df["control_type"] = df["Current(A)"].apply(get_control_type)
-df["control_value"] = df["Current(A)"].apply(get_control_value).replace("0", "")
+df["control_value"] = df["Current(A)"].apply(get_control_value)
 df["end_type"] = 3
 df["end_value"] = df["Test(s)"].diff().shift(-1)
 df.iloc[-1,-1] = 10
@@ -65,7 +65,21 @@ def line_prepender(filename, line):
         f.seek(0, 0)
         f.write(line.rstrip('\r\n') + '\n' + content)
 
+def line_appender(filename, line):
+    with open(filename, "a") as f:
+        f.write(line)
 
-header_str = "Cycler\nVersion_1\n1201\n"
+
+
+header_str = "Cycler\nVersion_1\n{}\n".format(n_steps)
+footer_str = """Oven
+Disabled
+0
+HTC	=	         100
+OVEN CONVECTION MODE	=	0
+Filter	=
+InitTemp	=	25"""
+
 df.to_csv(file_out, sep="\t", header=False, index=False)
 line_prepender(file_out, header_str)
+line_appender(file_out, footer_str)
