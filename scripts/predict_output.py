@@ -51,6 +51,8 @@ import matplotlib.pyplot as plt
 plt.hist(m.resid) 
 print(m.summary())
 
+plt.scatter(X, y)
+
 
 
 

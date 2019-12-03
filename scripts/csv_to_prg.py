@@ -9,6 +9,9 @@ import pandas as pd
 file_in = "../cycles-raw/pulse_10pct.csv"
 file_out = "../cycles-prg/pulse_10pct.prg"
 
+file_in = "../cycles-raw/norm_30sd40cap.csv" 
+file_out = "../cycles-prg/norm_30sd40cap.prg" 
+
 # ------------------------------------------------------------------------------
 # Read in raw cycle
 
