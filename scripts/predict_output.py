@@ -130,14 +130,14 @@ def predict_soc(df, update_func, eff_c, eff_d):
     return df
 
 def plot_resid(df): 
-    df["pred_avg_resid"] = df["Q_pred_avg"] - df["Q"].shift(1) 
-    df["pred_var_resid"] = df["Q_pred_var"] - df["Q"].shift(1)
+    df["pred_avg_resid"] = (df["Q_pred_avg"] - df["Q"].shift(1))
+    df["pred_var_resid"] = (df["Q_pred_var"] - df["Q"].shift(1))
     
     plt.figure() 
     plt.plot(df["Test(min)"], df["pred_avg_resid"], label="eff_avg", alpha=0.6) 
     plt.plot(df["Test(min)"], df["pred_var_resid"], label="eff_var", alpha=0.6) 
     plt.xlabel("Test (min)") 
-    plt.ylabel("SOC Residual (%)") 
+    plt.ylabel("Residual (% SOC)") 
     plt.legend() 
     plt.tight_layout() 
     
