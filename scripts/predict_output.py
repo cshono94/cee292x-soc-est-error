@@ -71,7 +71,7 @@ model_d = train_lm_model(fit_d, test_d)
 #----------------------------------------------------------
 # Write Predict SOC update function 
 
-def soc_update_avg(Q, I, dt, eff_c, eff_d): 
+def soc_update_avg(Q, I, dt, eff_c, eff_d, sd_I=0): 
     """
     Returns next Q (SOC) given a fixed charge and discharge efficiency
     """ 
@@ -84,10 +84,10 @@ def soc_update_avg(Q, I, dt, eff_c, eff_d):
             eff = eff_d
         else: 
             eff = 1 
-        
+        I_err = np.random.normal(0,sd_I,1)[0] 
         return Q + (eff * -I * dt) / Q_AH_NOM * 100 
 
-def soc_update_lm(Q, I, dt, m_c, m_d): 
+def soc_update_lm(Q, I, dt, m_c, m_d, sd_I=0): 
     """
     Returns next Q (SOC) given a regressed charge and discharge efficiency
     """ 
@@ -102,7 +102,8 @@ def soc_update_lm(Q, I, dt, m_c, m_d):
         else: 
             eff = 1
             
-        return Q + (eff * -I * dt) / Q_AH_NOM * 100 
+        I_err = np.random.normal(0,sd_I,1)[0] 
+        return Q + (eff * -(I+I_err) * dt) / Q_AH_NOM * 100 
 
 def predict_soc(df, update_func, eff_c, eff_d): 
     if update_func == soc_update_avg: 
@@ -133,7 +134,7 @@ def plot_resid(df):
     df["pred_avg_resid"] = (df["Q_pred_avg"] - df["Q"].shift(1))
     df["pred_var_resid"] = (df["Q_pred_var"] - df["Q"].shift(1))
     
-    plt.figure() 
+    plt.figure(dpi=200) 
     plt.plot(df["Test(min)"], df["pred_avg_resid"], label="eff_avg", alpha=0.6) 
     plt.plot(df["Test(min)"], df["pred_var_resid"], label="eff_var", alpha=0.6) 
     plt.xlabel("Test (min)") 
