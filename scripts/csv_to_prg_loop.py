@@ -43,7 +43,7 @@ dir_out = "../cycles-prg/"
 
 for idx in range(1, 9):
 
-    file_in = "norm_25sd40cap_{}.csv".format(idx) 
+    file_in = "norm_5sd40cap_{}.csv".format(idx) 
     file_out = file_in.replace(".csv", ".prg")
 
     # ------------------------------------------------------------------------------

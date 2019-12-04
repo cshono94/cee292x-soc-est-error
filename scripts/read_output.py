@@ -43,6 +43,7 @@ data_start_line = 65
 q_nom = 12.5
 
 filename = "../bds-out/norm_30sd40cap_7_norm_30sd40cap_7____0_NiMH_36s6p.out"
+filename = "../bds-out/norm_15sd40cap_8_norm_15sd40cap_8____0_NiMH_36s6p.out" 
 
 #----------------------------------------------------------
 # Generate output filenames
