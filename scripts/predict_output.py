@@ -20,7 +20,7 @@ filename_output_data = "../results-pickles/pulse_50pct_pulse_50pct____0_NiMH_36s
 filename_output_data = "../results-pickles/norm_30sd40cap_2_norm_30sd40cap_2____0_NiMH_36s6p_output_data.P"
 filename_output_data = "../results-pickles/pulse_merged_pulse_merged____0_NiMH_36s6p_output_data.P"
 
-filename_test_data = "../results-pickles/norm_30sd40cap_2_norm_30sd40cap_2____0_NiMH_36s6p_output_data.P" 
+filename_test_data = "../results-pickles/norm_25sd40cap_1_norm_25sd40cap_1____0_NiMH_36s6p_output_data.P" 
 
 Q_AH_NOM = 12.5 # Ah 
 

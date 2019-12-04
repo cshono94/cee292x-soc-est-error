@@ -6,8 +6,8 @@
 import pandas as pd
 import numpy as np
 import os
-import plotly.offline as pyo
-import plotly.graph_objs as go
+#import plotly.offline as pyo
+#import plotly.graph_objs as go
 
 #----------------------------------------------------------
 #----------------------------------------------------------
@@ -40,7 +40,10 @@ q_nom = 12.5
 
 filename = "../bds-out/pulse_merged_pulse_merged____0_NiMH_36s6p.out" 
 data_start_line = 65
-q_nom = 12.5 
+q_nom = 12.5
+
+filename = "../bds-out/norm_30sd40cap_7_norm_30sd40cap_7____0_NiMH_36s6p.out"
+filename = "../bds-out/norm_15sd40cap_8_norm_15sd40cap_8____0_NiMH_36s6p.out" 
 
 #----------------------------------------------------------
 # Generate output filenames
@@ -197,7 +200,7 @@ def plot_traces(output_data):
 output_data = read_nimh_output(filename)
 
 # Plot Results
-plot_traces(output_data)
+# plot_traces(output_data)
 
 # Export output_data to pickle
 output_data.to_pickle(filename_pickle)
