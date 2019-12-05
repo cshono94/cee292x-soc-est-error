@@ -7,6 +7,7 @@ Created on Wed Dec  4 15:55:08 2019
 """
 
 import pandas as pd 
+import numpy as np
 import matplotlib.pyplot as plt 
 import seaborn as sns; sns.set()
 
@@ -37,7 +38,7 @@ df_avg = df[avg_cols]
 df_var = df[var_cols] 
 
 df_avg = df_avg.stack().reset_index()
-df_avg["Efficiency"] = "avg"
+df_avg["Efficiency"] = "fixed"
 df_var = df_var.stack().reset_index() 
 df_var["Efficiency"] = "var" 
 

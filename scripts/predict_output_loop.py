@@ -34,7 +34,7 @@ filepath_out = "../results-pickles/residuals_wNoise.P"
 
 Q_AH_NOM = 12.5 # Ah 
 precision = 0.001 # fraction of range (10-bit) 
-precision = 0.00024 # fraction of range (12-bit) 
+#precision = 0.00024 # fraction of range (12-bit) 
 sd_I = precision * 40
 
  

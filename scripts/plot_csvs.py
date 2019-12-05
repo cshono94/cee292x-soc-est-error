@@ -76,9 +76,31 @@ plt.legend()
 plt.savefig("../results-plots/resid_SOC_plot.png", dpi=400) 
 plt.close() 
 
+# Plot Resid histogram plots for both 
+def distplot_fig(data, x, hue=None, row=None, col=None, legend=True, hist=False, **kwargs):
+    """A figure-level distribution plot with support for hue, col, row arguments."""
+    bins = kwargs.pop('bins', None)
+    if (bins is None) and hist: 
+        # Make sure that the groups have equal-sized bins
+        bins = np.histogram_bin_edges(data[x].dropna())
+    g = sns.FacetGrid(data, hue=hue, row=row, col=col)
+    g.map(sns.distplot, x, bins=bins, hist=hist, kde=False, **kwargs)
+    if legend and (hue is not None) and (hue not in [x, row, col]):
+        g.add_legend(title=hue) 
+    return g   
 
 
+df_res1["Signal"] = "RegD 1"
+df_res2["Signal"] = "RegD 2" 
 
+df_res = pd.concat([df_res1, df_res2], axis=0) 
+
+import numpy as np 
+bins = np.arange(-0.5, 4, 0.2)
+distplot_fig(df_res, x="SOC Residual (%)", hue="Signal", hist=True, bins=bins)  
+plt.ylabel("Count") 
+plt.savefig("../results-plots/resid_SOC_hist.png", dpi=400) 
+plt.close() 
 
 
 
