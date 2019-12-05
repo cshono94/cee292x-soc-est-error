@@ -10,9 +10,21 @@ import pandas as pd
 import matplotlib.pyplot as plt 
 import seaborn as sns; sns.set()
 
-file_in = "../results-pickles/residuals.P" 
+file_in = "../results-pickles/residuals_wNoise.P" 
 
 df = pd.read_pickle(file_in) 
+
+def distplot_fig(data, x, hue=None, row=None, col=None, legend=True, hist=False, **kwargs):
+    """A figure-level distribution plot with support for hue, col, row arguments."""
+    bins = kwargs.pop('bins', None)
+    if (bins is None) and hist: 
+        # Make sure that the groups have equal-sized bins
+        bins = np.histogram_bin_edges(data[x].dropna())
+    g = sns.FacetGrid(data, hue=hue, row=row, col=col)
+    g.map(sns.distplot, x, bins=bins, hist=hist, **kwargs)
+    if legend and (hue is not None) and (hue not in [x, row, col]):
+        g.add_legend(title=hue) 
+    return g   
 
 
 # Plot avgs 
@@ -35,18 +47,7 @@ df_all = df_all.rename(columns={0: "SOC Residual (%)"})
 plt.figure(dpi=200) 
 sns.lineplot(x="Test(min)", y="SOC Residual (%)", hue="Efficiency", data=df_all) 
 #sns.lineplot(x="Test(min)", y=0, data=df_var) 
-'''
-plt.figure() 
+plt.legend(loc='lower left')
 
-for avg_col in avg_cols: 
-    plt.plot(df[avg_col], color="tab:blue", alpha=0.2) 
-
-for var_col in var_cols: 
-    plt.plot(df[var_col], color="tab:orange", alpha=0.2) import seaborn as sns; sns.set()
-
-
-"tab:blue"
-"tab:orange" 
-'''
-
-
+distplot_fig(df_all, x="SOC Residual (%)", hue="Efficiency", hist=True, bins=np.arange(-0.2,0.2,0.02))
+plt.savefig("./test.png", dpi=400)

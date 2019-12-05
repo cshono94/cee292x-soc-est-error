@@ -30,10 +30,14 @@ filename_output_data = "../results-pickles/rand_signals/norm_25sd40cap_1_norm_25
 
 filename_test_data = "../results-pickles/rand_signals/norm_25sd40cap_2_norm_25sd40cap_2____0_NiMH_36s6p_output_data.P" 
 dir_in = "../results-pickles/rand_signals/" 
+filepath_out = "../results-pickles/residuals_wNoise.P"
 
 Q_AH_NOM = 12.5 # Ah 
+precision = 0.001 # fraction of range (10-bit) 
+precision = 0.00024 # fraction of range (12-bit) 
+sd_I = precision * 40
 
-
+ 
 def soc_update_avg(Q, I, dt, eff_c, eff_d, sd_I=0): 
     """
     Returns next Q (SOC) given a fixed charge and discharge efficiency
@@ -48,7 +52,7 @@ def soc_update_avg(Q, I, dt, eff_c, eff_d, sd_I=0):
         else: 
             eff = 1 
         I_err = np.random.normal(0,sd_I,1)[0] 
-        return Q + (eff * -I * dt) / Q_AH_NOM * 100 
+        return Q + (eff * -(I + I_err) * dt) / Q_AH_NOM * 100 
 
 def soc_update_lm(Q, I, dt, m_c, m_d, sd_I=0): 
     """
@@ -68,7 +72,7 @@ def soc_update_lm(Q, I, dt, m_c, m_d, sd_I=0):
         I_err = np.random.normal(0,sd_I,1)[0] 
         return Q + (eff * -(I+I_err) * dt) / Q_AH_NOM * 100 
 
-def predict_soc(df, update_func, eff_c, eff_d): 
+def predict_soc(df, update_func, eff_c, eff_d, sd_I=0): 
     if update_func == soc_update_avg: 
         pred_col = "Q_pred_avg"
     elif update_func == soc_update_lm: 
@@ -85,9 +89,9 @@ def predict_soc(df, update_func, eff_c, eff_d):
         I = df.loc[t-1, "Amps"]
         dt = df.loc[t-1, "step_hr"]
         if update_func == soc_update_avg: 
-            df.loc[t, pred_col] = soc_update_avg(Q, I, dt, eff_c, eff_d) 
+            df.loc[t, pred_col] = soc_update_avg(Q, I, dt, eff_c, eff_d, sd_I=sd_I) 
         elif update_func == soc_update_lm: 
-            df.loc[t, pred_col] = soc_update_lm(Q, I, dt, eff_c, eff_d) 
+            df.loc[t, pred_col] = soc_update_lm(Q, I, dt, eff_c, eff_d, sd_I=sd_I) 
         else: 
             continue 
         
@@ -155,8 +159,8 @@ eff_d_avg = fit_d["soc_eff"].mean()
 model_c = train_lm_model(fit_c) 
 model_d = train_lm_model(fit_d) 
 
-train_data = predict_soc(train_data, soc_update_avg, eff_c_avg, eff_d_avg) 
-train_data = predict_soc(train_data, soc_update_lm, model_c, model_d) 
+train_data = predict_soc(train_data, soc_update_avg, eff_c_avg, eff_d_avg, sd_I=sd_I) 
+train_data = predict_soc(train_data, soc_update_lm, model_c, model_d, sd_I=sd_I) 
 
 
     
@@ -185,8 +189,8 @@ for filename in os.listdir(dir_in):
     #train_data = predict_soc(train_data, soc_update_avg, eff_c_avg, eff_d_avg) 
     #train_data = predict_soc(train_data, soc_update_lm, model_c, model_d) 
     
-    test_data_full = predict_soc(test_data_full, soc_update_avg, eff_c_avg, eff_d_avg) 
-    test_data_full = predict_soc(test_data_full, soc_update_lm, model_c, model_d) 
+    test_data_full = predict_soc(test_data_full, soc_update_avg, eff_c_avg, eff_d_avg, sd_I=sd_I) 
+    test_data_full = predict_soc(test_data_full, soc_update_lm, model_c, model_d, sd_I=sd_I) 
     
     train_data = plot_resid(train_data)
     test_data_full = plot_resid(test_data_full) 
@@ -204,7 +208,7 @@ for filename in os.listdir(dir_in):
     idx += 1   
 
 # Export Results
-df_concat.to_pickle("../results-pickles/residuals.P") 
+df_concat.to_pickle(filepath_out) 
                              
 
 
